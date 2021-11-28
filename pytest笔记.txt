@@ -1,0 +1,93 @@
+2021.08.22
+一. 什么是测试框架？
+    测试框架就是能帮你自动化实现一套完整测试过程的工具，它必须实现以下几个功能：
+        a. 寻找测试用例--能找到所有需要执行的测试用例
+        b. 执行测试用例
+        c. 判断结果，比较真实的结果是否与期望的结果匹配
+        d. 生成测试报告
+
+二. pytest 测试框架
+
+    1. 测试用例的运行的默认规则
+        模块名必须以test_开头或者_test结尾（这个模块指的是.py文件）
+        模块下面的类必须test_开头或者_test结尾（.py文件中的class）
+        类下面的方法必须est_开头或者_test结尾（class中的def）
+
+    2.测试用例的几种运行方法以及常用参数：
+        （1）主函数运行
+            运行所有测试用例：pytest.main()
+            运行指定模块下的所有测试用例：pytest.main(['-v, test_login.py '])
+            运行指定目录下的所有测试用例：。。。百度
+            运行指定目录/模块下的某一个测试用例：。。。百度
+            Note！！！:
+            如果想使用主函数运行方式，那么必须添语句：
+                if __name__ == '__main__':
+                    pytest.main()
+                    #pytest.main(['-v'])
+            这条语句无论存在于哪一个模块文件（.py文件）下，那么都会执行该文件的当前目录下的所有test_函数。
+            如何运行并产生结果呢？右键当前.py文件，‘run’一下。
+
+        （2）命令行运行
+         在pycharm Terminal中输入命令
+            运行所有测试用例：pytest
+            运行指定模块下的所有测试用例：pytest -v tes_login.py
+            运行指定目录下的所有测试用例：pytest -vs ./Testcase_py
+                   note！！！输入该命令前，要检查终端提示符所在位置，如果提示符已经在文件夹下，
+                   比如终端提示符已经在C:\学习资料\pytest_learning\Testcase_py>
+                   那么只需要输入：pytst -vs即可
+            运行指定目录/模块下的某一个测试用例：。。。百度
+
+        （3）带参数运行：
+            -s：输出调试信息，debug信息，包括print函数的输出
+            -v：输出运行过程中的更加详细的信息
+            -k：运行包含特定字符串的测试用例
+            比如：在pycharm Terminal中输入 pytest -vs ./Testcase_py -k "ture"
+                所有模块和函数中带有“ture”字符串的，都会被运行
+
+        （4）通过读取pytest.ini文件运行
+             什么是pytest.ini文件？
+                它是一种全局配置文件，是pytest框架的核心配置文件，利用该文件可以修改pytest默认的运行规则（比如test开头，-VS等参数）
+             位置：
+                该文件一般放在项目的根目录
+             编码：
+                必须是ANSI编码（可以利用notepad++更改编码）
+             作用：
+                改变pytest的默认的行为
+             运行规则：
+                无论是主函数运行还是命令行运行，都会读取pytest.ini文件
+             pytest.ini文件内容举例：
+                [pytest]
+                addopts = -vs -k                #命令行的参数，用空格隔开
+                          --html ./report.html  #生成html的report文件
+                testpaths = ./Testcase_py       #测试用例运行路径
+                python_files = test_*.py        #修改模块名的开头
+                python_classes = Test*          #类的开头
+                python_functions = test*        #函数的开头
+
+
+    3.pytest运行测试用例的顺序
+        在每一个.py文件中，默认是从上到下的顺序运行测试用例
+        如何定义运行的顺序呢？
+        在def test_case_01()的上面添加@pytest.marke.run(order=1)，那么该case将第一个被执行，@pytest.marke.run(order=2)表示第二个被执行。
+
+    4. pytest 分组执行（每个模块下挑选几个case执行）
+        如何操作？在相应的cases上方加入mark，比如@pytest.mark.smoke,然后在终端输入pytest -vs -m "smoke"
+
+
+    5. pytest跳过指定测试用例
+        第一种情况：无条件跳过该测试用例
+            如何操作？在相应的cases上方加入mark，比如
+            pyest.mark.skip
+            pyest.mark.skip(reason="blabla...")
+        第二种情况：有条件的跳过该测试用例
+            如何操作？在相应的cases上方加入mark，比如pyest.mark.skipif(age>18, reasnon="blabla...")
+            使用skipif必须加上reason
+
+
+    6. pytest生成html的测试报告
+        首先在cmd终端安装html插件：pip install pytest-html
+        然后 使用pytest -vs --html ./report.html(注意report前面没有空格) 执行测试用例
+        ./ report.html：表示在根目录下（项目文件夹下，本项目文件夹路径是C：\学习资料\pytest_learning）生成一个名叫html 的文件
+        --html ./Testcase_py/test02/report.html:表示在项目文件夹下的test02文件下生成report.html文件。
+
+        也可以将--html ./report.html添加到pytest.ini addopts参数下，这样只需要在pycharm终端运行： pytest即可
