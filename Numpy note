@@ -45,3 +45,10 @@ numpy中的ndarray和array有什么区别？
 %timeit npSum()
 The slowest run took 262.56 times longer than the fastest. This could mean that an intermediate result is being cached.
 1000 loops, best of 3: 128 µs per loop
+
+
+
+多维数组的元素个数=各个维度乘积：
+  比如：np.arrange(48).reshape(3,4,4)或者np.arrange(48).reshape(2,6,4)
+
+
