@@ -1,0 +1,61 @@
+面向对象编程（类的定义）笔记
+
+什么是类属性？
+	定义在类的方法之外，但是在类里面的变量
+	name=n
+什么是实例属性？
+	定义在————init————中的变量，变量名前需要加self，比如self.name=n
+
+构造方法（__init__）和普通的类方法有什么区别？
+	__init_方法是魔术方法，当实例化类的时候，自动执行该方法
+	普通的类方法，必须实例化类后再“.”调用
+
+
+什么是魔术方法？
+	类似于__init__方法，在前后都有下划线的方法属于魔术方法，魔术方法是在一定条件下自动触发调用（比如实例化后自动调用），当然也可以自己再手动调用。
+
+
+在继承其他类的时候，调用__init__有哪几种方式？
+	第一种使用super方式调用
+		class peolpe():
+			"定义people类"
+			def __init__(self,name, age):
+
+				....
+		class Student(people):
+			"定义studnet类并继承people类"
+			def __init__(self, grade):
+				super.__init__(self,name,age)
+
+	第二种采用直接调用的方式
+		class peolpe():
+		"定义people类"
+		def __init__(self,name, age):
+
+			....
+		class Student(people):
+		"定义studnet类并继承people类"
+			def __init__(self, grade):
+				people.__init__(self,name,age)
+
+		建议采用第二种方式
+
+	为什么采用第二种方式呢？
+		以为如果在继承的时候继承多个类，那么采用super需要考虑继承的顺序问题，顺序是：查找兄弟类，再查找父类，再上一层查找。。。
+		但是如果直接使用类名.init()的方式，就不需要考虑继承顺序的问题。
+		class Teacher(people, Student):
+			"定义teaccher类"
+			def __init__(self,height):
+				peopel.__init__()
+				Student.__init__()
+				...
+
+
+定义类时有三种类型的方法：
+	1.实例方法 2.被定义的类的方法  3. 静态方法
+
+	实例方法：一般使用self作为参数，传入的是实例对象本身，不需要任何装饰器标注，该方法只能被实例对象调用
+
+	类方法：必须要装饰器@classmethod标注，一般使用cls作为参数，传入是该类对象的本身，类方法既可以被实例对象调用也可以被类对象调用
+
+	静态方法：必须要装饰器@staticmethod标注，不使用self或者cls参数，就是一个普通的函数定义在类的里面。静态方法既可以被类对象调用也可以被实例对象调用。

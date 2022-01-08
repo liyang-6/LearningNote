@@ -1,0 +1,32 @@
+闭包和装饰器笔记
+
+（详细请看《闭包的实质文档》）
+
+什么是闭包？
+	当一个外函数返回的是内函数的引用时，成为闭包
+
+
+	def outfunc():
+		a=1
+		def innerfunc(b):
+			return a*b
+		return innerfunc
+
+	注意点：
+	外函数返回的是内函数的引用，相当于内函数在内存中的地址变量。当内涵数被定义时，python开辟了一段内存空间给内函数代码，这段内函数空间所在的地址变量相当于被调用了。
+	innerfunc 是函数名，它是代表的是引用，而innerfunc()是调用函数
+
+	闭包陷进：
+	def my_func(*args):
+		fs = []
+		for i in range(3):
+			def func():
+				return i * i
+			fs.append(func)
+		return fs
+	fs1, fs2, fs3 = my_func()
+	print （fs1()）#4
+	print （fs2()）#4
+	print （fs3()）#4
+	为什么结果是4？而不是[0，1，4]？
+		因为fs.append(func)指的是，fs列表添加的是func，是函数名，是引用，这个引用一直指向的是i*i，而i的值最后为2，所以结果为4

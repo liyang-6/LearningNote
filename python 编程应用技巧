@@ -1,0 +1,53 @@
+python 编程应用技巧
+
+
+1.编程中多用字典
+
+2. 如果if else 分支比较多的时候， 采用字典映射的方式更加简洁直观
+
+举例：读、写文件，文件格式有txt，json，csv
+那么产生的分支有6个（读分支3个，写分支3个）： 
+	if writefile:
+		if write_txt:
+		elif write_json
+		elif write_csv
+	elif readfile:
+		...
+		,..
+		,,,
+
+此时可以一个字典来映射所有的分支
+	func_dic={'read':{'txt格式'：read_txtfunc,'json格式':read_jsonfunc}
+			  'write':{'txt格式':write_txtfunc,'json格式':write_jsonfunc}}
+采用字典的键值索引方式：
+	func_dic['read']['json格式']
+	
+
+def read_writeFile(filename,method='read'):
+    '''
+    :param filename:.txt .json. .csv .pkl
+    :param method: read or write
+    :return: closure name
+    '''
+
+    #定义每种文件的类型的读写函数
+    def read_txt():
+		pass	
+    def read_json():
+        pass
+
+    def write_txt(content):
+        pass
+
+    def write_json(content):
+        pass
+
+    #判断文件类型的格式
+    #filename.split('.')返回一个列表[’asda‘,'txt']
+    file_suffix=filename.split('.')[1]
+
+    #采用字典映射方式代替多个if-else分支的代码
+    func_dic={'read':{'txt':read_txt,'json':read_json},
+              'write':{'txt':write_txt,'json':write_json}}
+
+    return func_dic[method][file_suffix]

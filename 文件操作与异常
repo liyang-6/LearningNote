@@ -1,0 +1,26 @@
+文件操作与异常
+
+with open as...语句可以让python自动关闭文件对象
+
+文件对象f一个可迭代对象，
+for line in f:
+	print(line)
+#打印文件对象f中的每一行
+
+f.readline()从当前游标的位置处读取下一行
+
+f.readlines()把文件对象f中的每一行数据读取出来并存放在列表中
+
+
+pickle 模块可以保存和读取对象的数据
+import pickle
+
+pickle.load()#读取
+pickle.dump()#写入
+
+读写pkl文件必须用二进制的方式读写，也就是rb和wb
+
+#读
+with open('test.pkl'.'rb') as f:
+	
+	data=pickle.load(f.readlines())
